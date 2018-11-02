@@ -1,0 +1,26 @@
+{
+  "name": "oauth-factory",
+  "version": "0.0.1",
+  "description": "A factory that integrates with a variety of OAuth providers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Authing/oauth-factory.git"
+  },
+  "keywords": [
+    "oauth"
+  ],
+  "author": "yelexin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Authing/oauth-factory/issues"
+  },
+  "homepage": "https://github.com/Authing/oauth-factory#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4"
+  }
+}
