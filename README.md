@@ -22,8 +22,14 @@ githubAuth(app, '/auth/github', {
     state: Math.random().toString(26).slice(2),
     scope: '',
     allowSignup: true
-}, function (userData) {
-    console.log('hook ', userData)
+}, function (userData, resolve, reject) {
+    var t = new Promise((resolve, reject) =>{
+        setTimeout(resolve, 10000)
+    })
+    t.then(()=>{
+        console.log('hook', userData)
+        resolve() // 调用 resolve 执行跳转前端并带上用户信息，调用 reject 会返回 400 错误，不携带用户信息
+    })
 }, 'http://localhost:8080/githubok')
 ```
 
@@ -31,7 +37,7 @@ OAuthFactory 可以根据输入生产不同的函数。函数有五个参数。
 1. app 是 express 实例。
 2. '/auth/github' 是前端 `<a>` 标签被点击后，处理请求的路由。
 3. { ... } 对象是 OAuth 提供商的参数，一般包括 clientId, clientSecret, redirectURL, scope, state。一律遵循小驼峰命名。
-4. `function(userData) { }` 是钩子函数，用来处理获取到的用户信息。
+4. `function(userData, resolve, reject) { }` 是钩子函数，用来处理获取到的用户信息，可以通过 resolve 返回处理后的信息给前端。
 5. 'http://localhost:8080/githubok' OAuth 登录逻辑完成后将跳转到前端哪个页面。
 
 # OAuth 提供商文档集合
