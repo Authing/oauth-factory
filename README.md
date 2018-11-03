@@ -3,13 +3,15 @@ Integrate with third party OAuth providers. Use OAuth out of box.
 
 集成了众多 OAuth 厂商，开箱即用的 OAuth 登录功能。
 
-### 快速开始
+## 快速开始
 
-安装依赖
+### 安装依赖
 
 ```shell
 $ npm install express axios --save
 ```
+
+### 示例：调用 Github 的 OAuth
 
 ```javascript 
 const express = require('express')
