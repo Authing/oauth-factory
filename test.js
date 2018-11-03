@@ -29,14 +29,14 @@ githubAuth(app, '/auth/github', {
     console.log('hook ', userData)
 }, 'http://localhost:8080/ojbk')
 
-wechatAuth(app, '/auth/wechat', {
-    appId: '',
-    secret: '',
-    redirectURL: '',
-    state: Math.random().toString(26).slice(2),
-}, function (userData) {
-    console.log(userData)
-}, 'http://localhost:8080/wechatok')
+// wechatAuth(app, '/auth/wechat', {
+//     appId: '',
+//     secret: '',
+//     redirectURL: '',
+//     state: Math.random().toString(26).slice(2),
+// }, function (userData) {
+//     console.log(userData)
+// }, 'http://localhost:8080/wechatok')
 
 oschinaAuth(app, '/auth/oschina', {
     clientId: '3Xsh3OyJ978fsPHs5oAs',
