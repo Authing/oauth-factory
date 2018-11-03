@@ -8,7 +8,7 @@ function wechat(app, path, config, hook, toFrontEnd) {
         throw new Error('no appId')
     }
     if (!config.secret) {
-        throw new Error('no clientSecret')
+        throw new Error('no secret')
     }
     if (!config.state) {
         throw new Error('no state')
