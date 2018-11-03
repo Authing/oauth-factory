@@ -35,10 +35,10 @@ githubAuth(app, '/auth/github', {
 
 OAuthFactory 可以根据输入生产不同的函数。函数有五个参数。
 1. app 是 express 实例。
-2. '/auth/github' 是前端 `<a>` 标签被点击后，处理请求的路由。
+2. '/auth/github' 是前端 `<a>` 标签被点击后，处理请求的路由，可随意指定。
 3. { ... } 对象是 OAuth 提供商的参数，一般包括 clientId, clientSecret, redirectURL, scope, state。一律遵循小驼峰命名。
 4. `function(userData, resolve, reject) { }` 是钩子函数，用来处理获取到的用户信息，可以通过 resolve 返回处理后的信息给前端。
-5. 'http://localhost:8080/githubok' OAuth 登录逻辑完成后将跳转到前端哪个页面。
+5. 'http://localhost:8080/githubok' OAuth 登录逻辑完成后将跳转到前端哪个页面。用户信息通过 `?data={ ... }` 的 query 返回。
 
 # OAuth 提供商文档集合
 
