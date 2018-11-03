@@ -2,6 +2,8 @@ const github = require('./github')
 const wechat = require('./wechat')
 const stackoverflow = require('./stackoverflow')
 const oschina = require('./oschina')
+const dingding = require('./dingding')
+
 
 const OAuthFactory = function OAuthFactory(provider) {
     switch (provider) {
@@ -17,6 +19,9 @@ const OAuthFactory = function OAuthFactory(provider) {
         case 'wechat':
             return wechat
             break;
+        case 'dingding':
+            return dingding
+            break
     }
 
 }

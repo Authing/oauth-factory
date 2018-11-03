@@ -5,8 +5,17 @@ var githubAuth = OAuthFactory('github')
 var oschinaAuth = OAuthFactory('oschina')
 var stackoverflow = OAuthFactory('stackoverflow')
 var wechatAuth = OAuthFactory('wechat')
+var dingdingAuth = OAuthFactory('dingding')
 
-
+dingdingAuth(app, '/auth/dingding', {
+    appId: 'dingoad1iwmifcjsrjpprn',
+    appSecret: 'OOQcaO7ER2pT19gpqQDWJfoVKTrvL_JSr28F9Namn-cnT5vCCHHHg4e9CNRAb660',
+    redirectURL: 'http://localhost:3000/oauth/handleRedirect/dingding',
+    state: Math.random().toString(26).slice(2),
+}, function (userData) {
+    console.log('hook ', JSON.stringify(userData))
+    
+}, 'http://localhost:8080/dingdingok')
 stackoverflow(app, '/auth/stackoverflow', {
     clientId: '13491',
     clientSecret: ')eUGlJ9zTtY1BmsGJAsKIQ((',
