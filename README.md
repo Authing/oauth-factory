@@ -7,9 +7,11 @@ Integrate with third party OAuth providers. Use OAuth out of box.
 
 安装依赖
 
-`npm install express axios --save`
-
+```shell
+$ npm install express axios --save
 ```
+
+```javascript 
 const express = require('express')
 var app = express()
 const OAuthFactory = require('./index.js')
