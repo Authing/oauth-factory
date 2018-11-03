@@ -17,7 +17,7 @@ function github(app, path, config, hook, toFrontEnd) {
     return new Promise((resolve, reject) => {
         try {
             var option = url.parse(config.redirectURL)
-
+            var userData = {}
             // <a> link that user click
             app.get(path, function (req, res, next) {
                 var arg = querystring.stringify({
@@ -47,14 +47,22 @@ function github(app, path, config, hook, toFrontEnd) {
                     return axios.get('https://api.github.com/user', { headers: { Authorization: 'token ' + accessToken } })
 
                 }).then(data => {
-                    hook(data.data)
+                    userData = data.data
+                    return new Promise((resolve, reject) => {
+                        hook(userData, resolve, reject)
+                    })
+                }).then(data => {
+                    if (data) {
+                        return data
+                    }
+                    return userData
+                }).then((data) => {
+                    var arg = JSON.stringify(data)
+                    res.redirect(toFrontEnd + '?data=' + arg)
+                }).catch(err => {
+                    console.log(err)
+                    res.status(400).send('Bad request')
                 })
-                    .then(() => {
-                        res.redirect(toFrontEnd)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
 
             })
             resolve(0)

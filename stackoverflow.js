@@ -20,7 +20,7 @@ function stackoverflow(app, path, config, hook, toFrontEnd) {
     return new Promise((resolve, reject) => {
         try {
             var option = url.parse(config.redirectURL)
-
+            var userData = {}
             // <a> link that user click
             app.get(path, function (req, res, next) {
                 var arg = querystring.stringify({
@@ -55,11 +55,22 @@ function stackoverflow(app, path, config, hook, toFrontEnd) {
                     })
 
                 }).then(data => {
-                    hook(data.data.items[0])
-                }).then(() => {
-                    res.redirect(toFrontEnd)
+                    userData = data.data
+                    return new Promise((resolve, reject) => {
+                        hook(userData, resolve, reject)
+                    })
+                }).then(data => {
+                    if (data) {
+                        return data
+                    }
+                    return userData
+                }).then((data) => {
+                    var arg = JSON.stringify(data)
+                    res.redirect(toFrontEnd + '?data=' + arg)
                 }).catch(err => {
                     console.log(err)
+                    res.status(400).send('Bad request')
+
                 })
 
             })

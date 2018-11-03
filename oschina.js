@@ -17,7 +17,7 @@ function oschina(app, path, config, hook, toFrontEnd) {
     return new Promise((resolve, reject) => {
         try {
             var option = url.parse(config.redirectURL)
-
+            var userData = {}
             // <a> link that user click
             app.get(path, function (req, res, next) {
                 var arg = querystring.stringify({
@@ -34,34 +34,47 @@ function oschina(app, path, config, hook, toFrontEnd) {
                 var code = req.query.code
                 // var refresh_token = 
                 console.log('code', code)
-                axios.get('https://www.oschina.net/action/openapi/token', {
-                    client_id: config.clientId,
-                    client_secret: config.clientSecret,
-                    grant_type: config.grantType ? config.grantType : 'authorization_code',
-                    redirect_uri: config.redirectURL,
-                    // refresh_token,
-                    state: config.state,
-                    dataType: config.dataType ? config.dataType : 'json',
-                    code,
-                    callback: config.callback ? config.callback : ''
+                return axios.get('https://www.oschina.net/action/openapi/token', {
+                    params: {
+                        client_id: config.clientId,
+                        client_secret: config.clientSecret,
+                        grant_type: config.grantType ? config.grantType : 'authorization_code',
+                        redirect_uri: config.redirectURL,
+                        // refresh_token,
+                        state: config.state,
+                        dataType: config.dataType ? config.dataType : 'json',
+                        code,
+                        callback: config.callback ? config.callback : ''
+                    }
                 }).then(data => {
                     console.log('token', data.data)
                     var accessToken = data.data.access_token
                     // load user info from github on behalf of the user
                     return axios.get('https://www.oschina.net/action/openapi/user', {
-                        access_token: accessToken,
-                        dataType: config.dataType ? config.dataType : 'json',
+                        params: {
+                            access_token: accessToken,
+                            dataType: config.dataType ? config.dataType : 'json',
+                        }
                     })
 
                 }).then(data => {
-                    hook(data.data)
-                }).then(() => {
-                    res.redirect(toFrontEnd)
-                })
-                    .catch(err => {
-                        console.log('token err ', err)
+                    userData = data.data
+                    return new Promise((resolve, reject) => {
+                        hook(userData, resolve, reject)
                     })
+                }).then(data => {
+                    if (data) {
+                        return data
+                    }
+                    return userData
+                }).then((data) => {
+                    var arg = JSON.stringify(data)
+                    res.redirect(toFrontEnd + '?data=' + arg)
+                }).catch(err => {
+                    console.log(err)
+                    res.status(400).send('Bad request')
 
+                })
             })
             resolve(0)
         } catch (err) {
